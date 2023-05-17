@@ -134,15 +134,14 @@ void Shop::Customer() {
    
 }
 void Shop::Add() {
+    m:
     fstream Products_Data;
     int tokens = 0;
     string name;
-    int code;
+    int code;//c
     float prs;
     float dis;
     
-
-
     cout << "\n\n\t\t\t ___Add The New products___ \n";
     cout << "\n\n\t\t\t Enter the Product Name: \n";
     cin >> Product_Name;
@@ -153,22 +152,75 @@ void Shop::Add() {
     cout << "\n\n\t\t\t Enter Discount Amount on product: \n";
     cin >> Discount;
 
-    Products_Data.open("Products_db.txt", ios::in); //this will open the products database in read mode only
+    Products_Data.open("Products_db.txt", ios::in); //this will open the products database in read only mode
     if (!Products_Data) {//this checks to be sure it exists,if it doesnt exist then it will open  new one and append text to it
         Products_Data.open("Products_db.txt", ios::app | ios::out); //opens the file in write mode and append text to it
         Products_Data << " " << Product_Name << " " << Product_Code << " " << Price << "  " << Discount <<"\n";
         Products_Data.close();
     }
     else {
-        Products_Data >> name >> code >> prs >> dis;
+        Products_Data >> name >> code >> prs >> dis;  //initializing the index of file
+
+        while(!Products_Data.eof()){    // eof=end of file option, checks every content of the file by iterating it
+            if (code == Product_Code) {
+                tokens++;
+            }
+            Products_Data >> name >> code >> prs >> dis;
+
+            
+        }
+        Products_Data.close();
     }
-
-
+    if (tokens == 1) {
+        goto m;
+    }
+    else {
+        Products_Data.open("Products_db.txt", ios::app | ios::out);
+        Products_Data << " " << Product_Name << " " << Product_Code << " " << Price << "  " << Discount << "\n";
+        Products_Data.close();
+    }
+    cout << "\n\n\t\t\t The Records has been added!";
 }
 void Shop::List_Items() {
 
 }
 void Shop::Modify() {
+    fstream Products_Data, Products_Data_1;
+    int tokens = 0;
+    int Product_Key;
+    string name;
+    int code;
+    int prs;
+    int dis;
+
+    cout << "\n\t\t\t\t Welcome! Modify Records From Here\n";
+    cout << "\n\t\t\t\t Please Enter The Product Code: \n"; //the product code confirms if the file exist or not
+    cin >> Product_Key;
+    Products_Data.open("Products_db.txt", ios::in);
+    if (!Products_Data) {
+        cout << "\n\t\t\t The Requested File Doesnt Exist Please!";
+
+    }
+    else {
+        Products_Data_1.open("Products_db_1.txt", ios::app | ios::out); /* opens the file in write mode, the edited file is saved as Products_db_1.txt */
+        Products_Data << " " << Product_Name << " " << Product_Code << " " << Price << "  " << Discount << "\n";
+        while (!Products_Data.eof())
+        {
+            if (Product_Key == Product_Code) {
+                cout << "\n\t\t\t Enter The Product Name: ";
+                cin >> name;
+                cout << "\n\t\t\t Enter The Product Code: ";
+                cin >> code;
+                cout << "\n\t\t\t Enter The Product Price: ";
+                cin >> prs;
+                cout << "\n\t\t\t Enter Discount On The Product: ";
+                cin >> dis;
+
+            }
+
+        }
+    }
+
 
 }
 void Shop::Delete() {
