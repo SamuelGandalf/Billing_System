@@ -182,6 +182,18 @@ void Shop::Add() {
     cout << "\n\n\t\t\t The Records has been added!";
 }
 void Shop::List_Items() {
+    fstream Products_Data;
+    Products_Data.open("Products_db.txt", ios::in);
+
+    cout << "\n\t Product Name \t\t\t Product Code \t\t\t Price \t\t\t Discount \n";
+    cout << "\n\n\t ________________________________________________________________ \n";
+    Products_Data << Product_Name << Product_Code << Price << Discount;
+
+    while (!Products_Data.eof()) {
+        cout << Product_Name << "\t\t\t" << Product_Code << "\t\t\t" << Price << "\t\t\t" << Discount << "\n";
+        Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+    }
+    Products_Data.close();
 
 }
 void Shop::Modify() {
@@ -195,7 +207,7 @@ void Shop::Modify() {
 
     cout << "\n\t\t\t\t Welcome! Modify Records From Here\n";
     cout << "\n\t\t\t\t Please Enter The Product Code: \n"; //the product code confirms if the file exist or not
-    cin >> Product_Key;
+    cin >> Product_Key; // also the poduct code is the one that the user wants to modify or edit
     Products_Data.open("Products_db.txt", ios::in);
     if (!Products_Data) {
         cout << "\n\t\t\t The Requested File Doesnt Exist Please!";
@@ -216,14 +228,63 @@ void Shop::Modify() {
                 cout << "\n\t\t\t Enter Discount On The Product: ";
                 cin >> dis;
 
+                Products_Data_1 << " " << name << " " << code << " " << prs << " " << dis << "\n";
+                cout << "\n\t\t\t The Data has been updated!";
+                tokens++;
             }
+            else {
+                Products_Data_1 << " " << Product_Name << " " << Product_Code << Price << " " << Discount;
+            }
+            Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+        }
+        Products_Data.close();
+        Products_Data_1.close();
+        remove("Products_db.txt");
+        rename("Products_db_1.txt", "Products_db.txt"); //renames the edited database to the original database
 
+        if (tokens == 0) {
+            cout << "\n\t\t\t No Records Found!\n";
         }
     }
 
 
 }
 void Shop::Delete() {
+    fstream Products_Data, Products_Data_1;
+    int tokens = 0;
+    int Product_Key;
+    
+    cout << "\n\n\t\t\t ___Delete Menu___\n";
+    cout << "\n\n\t\t\t Enter The Product Code To Be Deleted: ";
+    cin >> Product_Key;
+
+    Products_Data.open("Products_db.txt", ios::in);
+    if (!Products_Data) {
+        cout << "\n\n\t\t\t Sorry The File Doesnt Exist!";
+    }
+    else {
+        Products_Data_1.open("Products_db_1.txt", ios::app | ios::out);
+        Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+
+        while (!Products_Data.eof()) {
+            if (Product_Key == Product_Code) {
+                cout << "\n\n\t\t\t The Product has been deleted successfully!";
+            }
+            else {
+                Products_Data << "" << Product_Name << "" << Product_Code << "" << Price << "" << Discount << "\n";
+            }
+            Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+        }
+        Products_Data.close();
+        Products_Data.close();
+        remove("Products_db.txt");
+        rename("Products_db_1.txt", "Products_db.txt");
+
+        if (tokens == 0) {
+            cout << "\n\n\t\t\t No Records Found!";
+        }
+    }
+
 
 }
 void Shop::Reciept() {
