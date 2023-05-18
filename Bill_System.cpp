@@ -29,22 +29,23 @@ void Shop::Main_Menu() {
     string Password;
     cout << "\t\t\t\t ____AMISOFT SUPERMARKET____\n";
     cout << "\t\t\t\t ########################### \n\n";
-    cout << "\t\t\t\t\t\t\t __Main Menu__ \n";
+    cout << "\t\t\t\t     __Main Menu__ \n\n";
     cout << "\t\t\t\t 1. Shop Admin \n";
     cout << "\t\t\t\t 2. Shopkeeper \n";
     cout << "\t\t\t\t 3. Customer \n";
-    cout << "\t\t\t\t 4. Exit Apllication ";
-    cout << "\t\t\t\t Please Select An Option To Continue:  \n";
+    cout << "\t\t\t\t 4. Exit Apllication \n\n";
+    cout << "\t\t\t\t Please Select An Option To Continue: ";
     cin >> Option;
+    cout << "\n";
 
     string Default_Email = "samuel@hotmail.com";
     string Default_Password = "admin";
     switch (Option) {     
         case 1:
-            cout << " \t Please Login... \n";
-            cout << " \t Enter Email: \n";
+            cout << " \t\t\t\t Please Login... \n\n";
+            cout << " \t\t\t\t Enter Email: ";
             cin >> Email;
-            cout << "\t Enter Password: \n";
+            cout << "\t\t\t\t Enter Password: ";
             cin >> Password;
 
             if (Default_Email == Email && Default_Password == Password) {
@@ -284,7 +285,6 @@ void Shop::Delete() {
     }
 }
 void Shop::Reciept() {
-    m:
     fstream Products_Data;
     char Option;
     int arr[200];
@@ -306,6 +306,7 @@ void Shop::Reciept() {
         cout << "\n\n\t\t\t What will you like to order? ";
 
         do {
+            m:
             cout << "\n\n\t\t\t Please Enter The Product Code: ";
             cin >> arr[code];
             cout << "\n\n\t\t\t Please Enter The Quantity: ";
