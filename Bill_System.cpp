@@ -246,8 +246,6 @@ void Shop::Modify() {
             cout << "\n\t\t\t No Records Found!\n";
         }
     }
-
-
 }
 void Shop::Delete() {
     fstream Products_Data, Products_Data_1;
@@ -284,14 +282,74 @@ void Shop::Delete() {
             cout << "\n\n\t\t\t No Records Found!";
         }
     }
-
-
 }
 void Shop::Reciept() {
+    m:
+    fstream Products_Data;
+    char Option;
+    int arr[200];
+    int arrayy[200];
+    int code = 0;
+    float amount = 0;
+    float discout = 0;
+    float total = 0;
 
+    cout << "\n\n\t\t\t ___Welcome To The Receipt Menu___\n";
+    Products_Data.open("Products_db.txt", ios::in);
+    if (!Products_Data) {
+        cout << "\n\n\t\t\t No Records Please!";
+    }
+    else {
+        Products_Data.close();
+        List_Items();
+
+        cout << "\n\n\t\t\t What will you like to order? ";
+
+        do {
+            cout << "\n\n\t\t\t Please Enter The Product Code: ";
+            cin >> arr[code];
+            cout << "\n\n\t\t\t Please Enter The Quantity: ";
+            cin >> arrayy[code];
+
+            for (int i = 0; i < code; i++) {//checks if product code entered by user already exists in the file
+                if (arr[code] == arr[i]) {
+                    cout << "\n\n\t\t You Entered Duplicate Product Codes! Try Another.";
+                    goto m;
+                }
+            }
+            code++;
+
+            cout << "\n\t\t Please will you like to order another item? ";
+            cin >> Option;           
+        } 
+        while (Option == 'Y' || Option == 'y');
+        cout << "\n\n\t\t\t _____|RECEIPT|_____\n";
+        cout << "\nProduct Number \t\t Product Name \t\t Product Quantity \t\t Price \t\t Discount \n";
+
+        for (int i = 0; i < code; i++) {
+            Products_Data.open("Products_db.txt", ios::in);
+            Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+
+            while (!Products_Data.eof()) {
+                if (Product_Code == arr[i]) {
+                    amount = Price * arr[i];
+                    discout = amount - (amount * discout / 100);
+                    total = total + discout;
+                    cout << "\n" << Product_Name << "\t\t" << Product_Code << "\t\t" << arrayy[i] << "\t\t" << Price << "\t\t" << amount << "\t\t" << discout;
+                }
+                Products_Data >> Product_Name >> Product_Code >> Price >> Discount;
+
+            }
+        }
+        Products_Data.close();
+    } 
+    cout << "\n\t\t________________________________________________\n";
+    cout << "\n \t\t\t Total Amount: " << total;       
 }
+
 int main()
 {
-    
+    Shop S;
+    S.Main_Menu();  
 }
 
